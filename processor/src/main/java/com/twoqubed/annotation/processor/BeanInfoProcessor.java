@@ -11,12 +11,12 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
+import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import static javax.lang.model.element.ElementKind.*;
 import static javax.tools.Diagnostic.Kind.*;
 
 @SupportedAnnotationTypes("com.twoqubed.annotation.BeanInfo")
@@ -39,75 +40,90 @@ public class BeanInfoProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void doProcess(RoundEnvironment roundEnv) throws Exception {
-        String fqClassName = null;
-        String className = null;
-        String packageName = null;
-        Map<String, VariableElement> fields = new HashMap<String, VariableElement>();
-        Map<String, ExecutableElement> methods = new HashMap<String, ExecutableElement>();
+    private void doProcess(RoundEnvironment environment) throws Exception {
+        MetaBeanInfo metaBeanInfo = extractMetaBeanInfo(environment);
+        if (metaBeanInfo.fqClassName != null) {
+            writeBeanInfo(metaBeanInfo);
+        }
+    }
 
-        for (Element e : roundEnv.getElementsAnnotatedWith(BeanInfo.class)) {
-
-            if (e.getKind() == ElementKind.CLASS) {
-
-                TypeElement classElement = (TypeElement) e;
-                PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
-
-                processingEnv.getMessager().printMessage(NOTE, "annotated class: " + classElement.getQualifiedName(), e);
-
-                fqClassName = classElement.getQualifiedName().toString();
-                className = classElement.getSimpleName().toString();
-                packageName = packageElement.getQualifiedName().toString();
-
-            } else if (e.getKind() == ElementKind.FIELD) {
-
-                VariableElement varElement = (VariableElement) e;
-
-                processingEnv.getMessager().printMessage(
-                        NOTE,
-                        "annotated field: " + varElement.getSimpleName(), e);
-
-                fields.put(varElement.getSimpleName().toString(), varElement);
-
-            } else if (e.getKind() == ElementKind.METHOD) {
-
-                ExecutableElement exeElement = (ExecutableElement) e;
-
-                processingEnv.getMessager().printMessage(NOTE, "annotated method: " + exeElement.getSimpleName(), e);
-
-                methods.put(exeElement.getSimpleName().toString(), exeElement);
+    private MetaBeanInfo extractMetaBeanInfo(RoundEnvironment environment) {
+        MetaBeanInfo metaBeanInfo = new MetaBeanInfo();
+        for (Element e : environment.getElementsAnnotatedWith(BeanInfo.class)) {
+            if (e.getKind() == CLASS) {
+                handleAnnotatedClass(metaBeanInfo, e);
+            } else if (e.getKind() == FIELD) {
+                handleAnnotatedField(metaBeanInfo, e);
+            } else if (e.getKind() == METHOD) {
+                handleAnnotatedMethod(metaBeanInfo, e);
             }
         }
+        return metaBeanInfo;
+    }
 
-        if (fqClassName != null) {
+    private void handleAnnotatedClass(MetaBeanInfo metaBeanInfo, Element e) {
+        TypeElement classElement = (TypeElement) e;
+        PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
 
-            Properties props = new Properties();
-            URL url = this.getClass().getClassLoader().getResource("velocity.properties");
-            props.load(url.openStream());
+        processingEnv.getMessager().printMessage(NOTE, "annotated class: " + classElement.getQualifiedName(), e);
 
-            VelocityEngine ve = new VelocityEngine(props);
-            ve.init();
+        metaBeanInfo.fqClassName = classElement.getQualifiedName().toString();
+        metaBeanInfo.className = classElement.getSimpleName().toString();
+        metaBeanInfo.packageName = packageElement.getQualifiedName().toString();
+    }
 
-            VelocityContext vc = new VelocityContext();
+    private void handleAnnotatedField(MetaBeanInfo metaBeanInfo, Element e) {
+        VariableElement varElement = (VariableElement) e;
+        processingEnv.getMessager().printMessage(NOTE, "annotated field: " + varElement.getSimpleName(), e);
+        metaBeanInfo.fields.put(varElement.getSimpleName().toString(), varElement);
+    }
 
-            vc.put("className", className);
-            vc.put("packageName", packageName);
-            vc.put("fields", fields);
-            vc.put("methods", methods);
+    private void handleAnnotatedMethod(MetaBeanInfo metaBeanInfo, Element e) {
+        ExecutableElement exeElement = (ExecutableElement) e;
+        processingEnv.getMessager().printMessage(NOTE, "annotated method: " + exeElement.getSimpleName(), e);
+        metaBeanInfo.methods.put(exeElement.getSimpleName().toString(), exeElement);
+    }
 
-            Template vt = ve.getTemplate("beaninfo.vm");
+    private void writeBeanInfo(MetaBeanInfo metaBeanInfo) throws Exception {
+        VelocityEngine engine = initializeVelocityEngine();
+        VelocityContext context = initializeVelocityContext(metaBeanInfo);
+        Template template = engine.getTemplate("beaninfo.vm");
+        writeFile(metaBeanInfo, context, template);
+    }
 
-            JavaFileObject jfo = processingEnv.getFiler().createSourceFile(fqClassName + "BeanInfo");
+    private VelocityEngine initializeVelocityEngine() throws Exception {
+        URL url = getClass().getClassLoader().getResource("velocity.properties");
+        Properties props = new Properties();
+        props.load(url.openStream());
+        VelocityEngine engine = new VelocityEngine(props);
+        engine.init();
+        return engine;
+    }
 
-            processingEnv.getMessager().printMessage(NOTE, "creating source file: " + jfo.toUri());
+    private VelocityContext initializeVelocityContext(MetaBeanInfo metaBeanInfo) {
+        VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put("className", metaBeanInfo.className);
+        velocityContext.put("packageName", metaBeanInfo.packageName);
+        velocityContext.put("fields", metaBeanInfo.fields);
+        velocityContext.put("methods", metaBeanInfo.methods);
+        return velocityContext;
+    }
 
-            Writer writer = jfo.openWriter();
+    private void writeFile(MetaBeanInfo metaBeanInfo, VelocityContext context, Template template) throws IOException {
+        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaBeanInfo.fqClassName + "BeanInfo");
+        processingEnv.getMessager().printMessage(NOTE, "creating source file: " + fileObject.toUri());
+        Writer writer = fileObject.openWriter();
+        processingEnv.getMessager().printMessage(NOTE, "applying velocity template: " + template.getName());
+        template.merge(context, writer);
+        writer.close();
+    }
 
-            processingEnv.getMessager().printMessage(NOTE, "applying velocity template: " + vt.getName());
+    private static class MetaBeanInfo {
+        private String fqClassName;
+        private String className;
+        private String packageName;
 
-            vt.merge(vc, writer);
-
-            writer.close();
-        }
+        private final Map<String, VariableElement> fields = new HashMap<String, VariableElement>();
+        private final Map<String, ExecutableElement> methods = new HashMap<String, ExecutableElement>();
     }
 }
