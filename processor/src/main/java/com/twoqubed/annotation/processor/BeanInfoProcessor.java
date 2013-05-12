@@ -1,6 +1,6 @@
 package com.twoqubed.annotation.processor;
 
-import com.twoqubed.annotation.BeanInfo;
+import com.twoqubed.annotation.Built;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -27,7 +27,7 @@ import java.util.Set;
 import static javax.lang.model.element.ElementKind.*;
 import static javax.tools.Diagnostic.Kind.*;
 
-@SupportedAnnotationTypes("com.twoqubed.annotation.BeanInfo")
+@SupportedAnnotationTypes("com.twoqubed.annotation.Built")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class BeanInfoProcessor extends AbstractProcessor {
 
@@ -49,7 +49,7 @@ public class BeanInfoProcessor extends AbstractProcessor {
 
     private MetaBeanInfo extractMetaBeanInfo(RoundEnvironment environment) {
         MetaBeanInfo metaBeanInfo = new MetaBeanInfo();
-        for (Element e : environment.getElementsAnnotatedWith(BeanInfo.class)) {
+        for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
             if (e.getKind() == CLASS) {
                 handleAnnotatedClass(metaBeanInfo, e);
             } else if (e.getKind() == FIELD) {
@@ -110,7 +110,7 @@ public class BeanInfoProcessor extends AbstractProcessor {
     }
 
     private void writeFile(MetaBeanInfo metaBeanInfo, VelocityContext context, Template template) throws IOException {
-        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaBeanInfo.fqClassName + "BeanInfo");
+        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaBeanInfo.fqClassName + "Built");
         processingEnv.getMessager().printMessage(NOTE, "creating source file: " + fileObject.toUri());
         Writer writer = fileObject.openWriter();
         processingEnv.getMessager().printMessage(NOTE, "applying velocity template: " + template.getName());

@@ -1,19 +1,13 @@
 package com.twoqubed.annotation.sample;
 
-import com.twoqubed.annotation.BeanInfo;
+import com.twoqubed.annotation.Built;
 
-@BeanInfo
+@Built
 public class Article {
-    @BeanInfo
-    private String id;
-    @BeanInfo
-    private int department;
-    @BeanInfo
-    private String status;
 
-    public Article() {
-        super();
-    }
+    private String id;
+    private int department;
+    private String status;
 
     public String getId() {
         return id;
@@ -37,15 +31,5 @@ public class Article {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @BeanInfo
-    public void activate() {
-        setStatus("active");
-    }
-
-    @BeanInfo
-    public void deactivate() {
-        setStatus("inactive");
     }
 }
