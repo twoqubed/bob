@@ -1,4 +1,4 @@
-package com.twoqubed.annotation.processor;
+package com.twoqubed.annotation.processor.processor;
 
 import com.twoqubed.annotation.Built;
 import org.apache.velocity.Template;
@@ -165,10 +165,26 @@ public class BuiltProcessor extends AbstractProcessor {
         public String getType() {
             TypeMirror typeMirror = variableElement.asType();
             switch (typeMirror.getKind()) {
-                case DECLARED:
-                    return ((DeclaredType) typeMirror).asElement().getSimpleName().toString();
+                case BOOLEAN:
+                    return "boolean";
+                case BYTE:
+                    return "byte";
+                case CHAR:
+                    return "char";
+                case SHORT:
+                    return "short";
                 case INT:
                     return "int";
+                case LONG:
+                    return "long";
+                case FLOAT:
+                    return "float";
+                case DOUBLE:
+                    return "double";
+
+                case DECLARED:
+                    return ((DeclaredType) typeMirror).asElement().getSimpleName().toString();
+
                 default:
                     return "Object";
             }
