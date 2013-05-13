@@ -1,72 +1,28 @@
 package ${packageName};
 
-import java.beans.MethodDescriptor;
-import java.beans.ParameterDescriptor;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
+public class ${className}Builder  {
 
-public class ${className}Built  {
+#foreach($parameter in $parameters)
+    private ${parameter.type} ${parameter.name};
+#end
 
-    /**
-     * Gets the bean class object.
-     *
-     * @return the bean class
-     */
-    public static Class getBeanClass() {
-
-        return ${packageName}.${className}.class;
+    public static ${className}Builder builder() {
+        return new ${className}Builder();
     }
+#foreach($parameter in $parameters)
 
-    /**
-     * Gets the bean class name.
-     *
-     * @return the bean class name
-     */
-    public static String getBeanClassName() {
-
-        return "${packageName}.${className}";
-    }
-
-    /**
-     * Finds the right method by comparing name & number of parameters in the class
-     * method list.
-     *
-     * @param classObject the class object
-     * @param methodName the method name
-     * @param parameterCount the number of parameters
-     *
-     * @return the method if found, <code>null</code> otherwise
-     */
-    public static Method findMethod(Class classObject, String methodName, int parameterCount) {
-
-        try {
-            // since this method attempts to find a method by getting all
-            // methods from the class, this method should only be called if
-            // getMethod cannot find the method
-            Method[] methods = classObject.getMethods();
-            for (Method method : methods) {
-                if (method.getParameterTypes().length == parameterCount
-                    && method.getName().equals(methodName)) {
-                    return method;
-                }
-            }
-        } catch (Throwable t) {
-            return null;
-        }
-        return null;
-    }
-#foreach($field in $fields)
-
-    /**
-     * Returns the ${field.simpleName} property descriptor.
-     *
-     * @return the property descriptor
-     */
-    public PropertyDescriptor ${field.simpleName}PropertyDescriptor() {
-
-        PropertyDescriptor theDescriptor = null;
-        return theDescriptor;
+    public ${className}Builder ${parameter.methodName}(${parameter.type} ${parameter.name}) {
+        this.${parameter.name} = ${parameter.name};
+        return this;
     }
 #end
+
+    public ${className} build() {
+        return new ${className}(
+#foreach($parameter in $parameters)
+                ${parameter.param}
+#end
+        );
+    }
 
 }

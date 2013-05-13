@@ -5,31 +5,26 @@ import com.twoqubed.annotation.Built;
 @Built
 public class Article {
 
-    private String id;
-    private int department;
-    private String status;
+    private final String id;
+    private final int department;
+    private final String status;
+
+    public Article(String id, int department, String status) {
+        this.id = id;
+        this.department = department;
+        this.status = status;
+    }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public int getDepartment() {
         return department;
     }
 
-    public void setDepartment(int department) {
-        this.department = department;
-    }
-
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
