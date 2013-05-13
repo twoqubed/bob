@@ -43,36 +43,32 @@ public class BuiltProcessor extends AbstractProcessor {
     }
 
     private void doProcess(RoundEnvironment environment) throws Exception {
-        BuilderMetaData builderMetaData = extractMetaBeanInfo(environment);
-        if (builderMetaData.fqClassName != null) {
-            writeBeanInfo(builderMetaData);
-        }
-    }
-
-    private BuilderMetaData extractMetaBeanInfo(RoundEnvironment environment) {
-        BuilderMetaData builderMetaData = new BuilderMetaData();
         for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
-            if (e.getKind() == CLASS) {
-                handleAnnotatedClass(builderMetaData, e);
-            }
+            BuilderMetaData metaData = handleAnnotatedClass(e);
+            writeBeanInfo(metaData);
         }
-        return builderMetaData;
     }
 
-    private void handleAnnotatedClass(BuilderMetaData builderMetaData, Element e) {
+    private BuilderMetaData handleAnnotatedClass(Element e) {
+        BuilderMetaData metaData = new BuilderMetaData();
         TypeElement classElement = (TypeElement) e;
         PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
 
         processingEnv.getMessager().printMessage(NOTE, "annotated class: " + classElement.getQualifiedName(), e);
 
-        builderMetaData.fqClassName = classElement.getQualifiedName().toString();
-        builderMetaData.className = classElement.getSimpleName().toString();
-        builderMetaData.packageName = packageElement.getQualifiedName().toString();
+        metaData.fqClassName = classElement.getQualifiedName().toString();
+        metaData.className = classElement.getSimpleName().toString();
+        metaData.packageName = packageElement.getQualifiedName().toString();
 
+        addConstructorParameters(e, metaData);
+        return metaData;
+    }
+
+    private void addConstructorParameters(Element e, BuilderMetaData metaData) {
         for (Element enclosed : e.getEnclosedElements()) {
             if (enclosed.getKind() == CONSTRUCTOR) {
                 processingEnv.getMessager().printMessage(NOTE, "constructor", e);
-                handleAnnotatedConstructor(builderMetaData, enclosed);
+                handleAnnotatedConstructor(metaData, enclosed);
             }
         }
     }
@@ -109,8 +105,8 @@ public class BuiltProcessor extends AbstractProcessor {
         return velocityContext;
     }
 
-    private void writeFile(BuilderMetaData builderMetaData, VelocityContext context, Template template) throws IOException {
-        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(builderMetaData.fqClassName + "Builder");
+    private void writeFile(BuilderMetaData metaData, VelocityContext context, Template template) throws IOException {
+        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaData.fqClassName + "Builder");
         processingEnv.getMessager().printMessage(NOTE, "creating source file: " + fileObject.toUri());
         Writer writer = fileObject.openWriter();
         processingEnv.getMessager().printMessage(NOTE, "applying velocity template: " + template.getName());

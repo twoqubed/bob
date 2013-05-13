@@ -1,5 +1,7 @@
 package com.twoqubed.annotation.processor.processor;
 
+import com.twoqubed.annotation.sample.AnotherSample;
+import com.twoqubed.annotation.sample.AnotherSampleBuilder;
 import com.twoqubed.annotation.sample.Sample;
 import com.twoqubed.annotation.sample.SampleBuilder;
 import org.junit.Before;
@@ -63,5 +65,14 @@ public class BuiltProcessorTest {
     @Test
     public void buildsString() {
         assertEquals("foo", sample.getString());
+    }
+
+    @Test
+    public void supportsMultipleBulderClasses() {
+        AnotherSample anotherSample = AnotherSampleBuilder.builder()
+                .withAString("foo")
+                .build();
+
+        assertEquals("foo", anotherSample.getString());
     }
 }
