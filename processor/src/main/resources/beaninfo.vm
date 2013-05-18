@@ -20,9 +20,6 @@ public class ${className}Builder  {
 #end
 
     public ${className} build() {
-#foreach($field in $fields)
-        checkNotNull(${field}, String.format("Field [%s] cannot be null.", "${field}"));
-#end
         return new ${className}(
 #foreach($parameter in $parameters)
                 ${parameter.param}

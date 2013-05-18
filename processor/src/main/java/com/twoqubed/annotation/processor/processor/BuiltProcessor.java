@@ -102,7 +102,6 @@ public class BuiltProcessor extends AbstractProcessor {
         velocityContext.put("className", builderMetaData.className);
         velocityContext.put("packageName", builderMetaData.packageName);
         velocityContext.put("parameters", builderMetaData.parameters);
-        velocityContext.put("fields", builderMetaData.fields);
         return velocityContext;
     }
 
@@ -120,12 +119,9 @@ public class BuiltProcessor extends AbstractProcessor {
         private String className;
         private String packageName;
 
-        private final List<String> fields = new ArrayList<String>();
         private final List<ConstructorParam> parameters = new ArrayList<ConstructorParam>();
 
         private void addConstructorParam(VariableElement element) {
-            fields.add(element.getSimpleName().toString());
-
             parameters.add(new ConstructorParam(element));
             parameters.get(parameters.size() - 1).last = true;
             if (parameters.size() > 1) {

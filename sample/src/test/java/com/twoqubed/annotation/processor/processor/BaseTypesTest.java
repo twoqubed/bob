@@ -21,12 +21,4 @@ public class BaseTypesTest {
         assertEquals("foo", baseTypesSample.getString());
     }
 
-    @Test
-    public void throwsExceptionIfFieldNotSet() {
-        thrown.expect(NullPointerException.class);
-        thrown.expectMessage("Field [aString] cannot be null.");
-
-        BaseTypesSampleBuilder.builder().build();
-    }
-
 }
