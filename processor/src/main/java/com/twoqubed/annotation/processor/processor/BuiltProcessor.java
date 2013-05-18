@@ -11,6 +11,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.tools.JavaFileObject;
+import java.io.Writer;
 import java.util.Set;
 
 import static javax.lang.model.SourceVersion.*;
@@ -33,8 +35,11 @@ public class BuiltProcessor extends AbstractProcessor {
     private void doProcess(RoundEnvironment environment) throws Exception {
         for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
             BuilderMetaData metaData = handleAnnotatedClass(e);
-            BuilderWriter writer = new VelocityBuilderWriter();
-            writer.writeBeanInfo(metaData, processingEnv);
+            BuilderWriter builderWriter = new VelocityBuilderWriter();
+
+            JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaData.fqClassName + "Builder");
+            Writer writer = fileObject.openWriter();
+            builderWriter.writeBeanInfo(metaData, writer);
         }
     }
 

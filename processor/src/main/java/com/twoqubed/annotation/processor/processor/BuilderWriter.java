@@ -1,9 +1,9 @@
 package com.twoqubed.annotation.processor.processor;
 
-import javax.annotation.processing.ProcessingEnvironment;
+import java.io.Writer;
 
 public interface BuilderWriter {
 
-    void writeBeanInfo(BuilderMetaData builderMetaData, ProcessingEnvironment processingEnv) throws Exception;
+    void writeBeanInfo(BuilderMetaData builderMetaData, Writer writer) throws Exception;
 
 }

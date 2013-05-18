@@ -4,13 +4,9 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Properties;
-
-import static javax.tools.Diagnostic.Kind.*;
 
 public class VelocityBuilderWriter implements BuilderWriter {
 
@@ -21,10 +17,10 @@ public class VelocityBuilderWriter implements BuilderWriter {
     }
 
     @Override
-    public void writeBeanInfo(BuilderMetaData builderMetaData, ProcessingEnvironment processingEnv) throws Exception {
+    public void writeBeanInfo(BuilderMetaData builderMetaData, Writer writer) throws Exception {
         VelocityContext context = initializeVelocityContext(builderMetaData);
         Template template = engine.getTemplate("beaninfo.vm");
-        writeFile(builderMetaData, context, template, processingEnv);
+        writeFile(context, template, writer);
     }
 
     private VelocityEngine initializeVelocityEngine() {
@@ -48,12 +44,7 @@ public class VelocityBuilderWriter implements BuilderWriter {
         return velocityContext;
     }
 
-    private void writeFile(BuilderMetaData metaData, VelocityContext context, Template template,
-                           ProcessingEnvironment processingEnv) throws IOException {
-        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaData.fqClassName + "Builder");
-        processingEnv.getMessager().printMessage(NOTE, "creating source file: " + fileObject.toUri());
-        Writer writer = fileObject.openWriter();
-        processingEnv.getMessager().printMessage(NOTE, "applying velocity template: " + template.getName());
+    private void writeFile(VelocityContext context, Template template, Writer writer) throws IOException {
         template.merge(context, writer);
         writer.close();
     }
