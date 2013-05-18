@@ -8,25 +8,32 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.Properties;
 
 import static javax.tools.Diagnostic.Kind.*;
 
 public class VelocityBuilderWriter implements BuilderWriter {
 
+    private final VelocityEngine engine;
+
+    public VelocityBuilderWriter() {
+        this.engine = initializeVelocityEngine();
+    }
+
     @Override
     public void writeBeanInfo(BuilderMetaData builderMetaData, ProcessingEnvironment processingEnv) throws Exception {
-        VelocityEngine engine = initializeVelocityEngine();
         VelocityContext context = initializeVelocityContext(builderMetaData);
         Template template = engine.getTemplate("beaninfo.vm");
         writeFile(builderMetaData, context, template, processingEnv);
     }
 
-    private VelocityEngine initializeVelocityEngine() throws Exception {
-        URL url = getClass().getClassLoader().getResource("velocity.properties");
+    private VelocityEngine initializeVelocityEngine() {
         Properties props = new Properties();
-        props.load(url.openStream());
+        props.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.SystemLogChute");
+        props.setProperty("resource.loader", "classpath");
+        props.setProperty("classpath.resource.loader.class",
+                "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
         VelocityEngine engine = new VelocityEngine(props);
         engine.init();
         return engine;
