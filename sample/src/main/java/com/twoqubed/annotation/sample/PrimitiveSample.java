@@ -3,7 +3,7 @@ package com.twoqubed.annotation.sample;
 import com.twoqubed.annotation.Built;
 
 @Built
-public class Sample {
+public class PrimitiveSample {
 
     private final boolean aBoolean;
     private final char aChar;
@@ -12,10 +12,9 @@ public class Sample {
     private final long aLong;
     private final float aFloat;
     private final double aDouble;
-    private final String aString;
 
-    public Sample(boolean aBoolean, char aChar, short aShort, int anInt, long aLong, float aFloat, double aDouble,
-                  String aString) {
+    public PrimitiveSample(boolean aBoolean, char aChar, short aShort, int anInt, long aLong, float aFloat,
+                           double aDouble) {
         this.aBoolean = aBoolean;
         this.aChar = aChar;
         this.aShort = aShort;
@@ -23,7 +22,6 @@ public class Sample {
         this.aLong = aLong;
         this.aFloat = aFloat;
         this.aDouble = aDouble;
-        this.aString = aString;
     }
 
     public boolean isBoolean() {
@@ -52,10 +50,6 @@ public class Sample {
 
     public double getDouble() {
         return aDouble;
-    }
-
-    public String getString() {
-        return aString;
     }
 
 }
