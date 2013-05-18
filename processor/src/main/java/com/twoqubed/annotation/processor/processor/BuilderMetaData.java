@@ -4,20 +4,20 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
-import static javax.lang.model.type.TypeKind.DECLARED;
+import static javax.lang.model.type.TypeKind.*;
 
 public class BuilderMetaData {
     String fqClassName;
     String className;
     String packageName;
 
-    final Set<String> imports = newHashSet();
-    final List<ConstructorParam> parameters = newArrayList();
+    final Set<String> imports = new HashSet<String>();
+    final List<ConstructorParam> parameters = new ArrayList<ConstructorParam>();
 
     void addConstructorParam(VariableElement element) {
         ConstructorParam constructorParam = new ConstructorParam(element);
