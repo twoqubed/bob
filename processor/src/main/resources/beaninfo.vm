@@ -1,6 +1,9 @@
 package ${packageName};
 
 import static com.google.common.base.Preconditions.*;
+#foreach($import in $imports)
+import ${import};
+#end
 
 public class ${className}Builder  {
 

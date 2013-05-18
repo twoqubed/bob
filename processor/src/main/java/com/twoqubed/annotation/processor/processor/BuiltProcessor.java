@@ -20,13 +20,15 @@ import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.*;
+import static com.google.common.collect.Sets.*;
 import static javax.lang.model.SourceVersion.*;
 import static javax.lang.model.element.ElementKind.*;
+import static javax.lang.model.type.TypeKind.*;
 import static javax.tools.Diagnostic.Kind.*;
 
 @SupportedAnnotationTypes("com.twoqubed.annotation.Built")
@@ -102,6 +104,7 @@ public class BuiltProcessor extends AbstractProcessor {
         velocityContext.put("className", builderMetaData.className);
         velocityContext.put("packageName", builderMetaData.packageName);
         velocityContext.put("parameters", builderMetaData.parameters);
+        velocityContext.put("imports", builderMetaData.imports);
         return velocityContext;
     }
 
@@ -119,13 +122,29 @@ public class BuiltProcessor extends AbstractProcessor {
         private String className;
         private String packageName;
 
-        private final List<ConstructorParam> parameters = new ArrayList<ConstructorParam>();
+        private final Set<String> imports = newHashSet();
+        private final List<ConstructorParam> parameters = newArrayList();
 
         private void addConstructorParam(VariableElement element) {
-            parameters.add(new ConstructorParam(element));
+            ConstructorParam constructorParam = new ConstructorParam(element);
+            parameters.add(constructorParam);
             parameters.get(parameters.size() - 1).last = true;
             if (parameters.size() > 1) {
                 parameters.get(parameters.size() - 2).last = false;
+            }
+
+            maybeAddImport(element);
+        }
+
+        private void maybeAddImport(VariableElement element) {
+            TypeMirror typeMirror = element.asType();
+            if (typeMirror.getKind() == DECLARED) {
+                DeclaredType declaredType = (DeclaredType) typeMirror;
+                TypeElement typeElement = (TypeElement) declaredType.asElement();
+                String packageName = typeElement.getQualifiedName().toString();
+                if (!packageName.startsWith("java.lang")) {
+                    imports.add(packageName);
+                }
             }
         }
     }
