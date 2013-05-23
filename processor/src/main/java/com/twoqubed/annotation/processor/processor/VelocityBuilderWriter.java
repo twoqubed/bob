@@ -17,8 +17,8 @@ public class VelocityBuilderWriter implements BuilderWriter {
     }
 
     @Override
-    public void writeBeanInfo(BuilderMetaData builderMetaData, Writer writer) throws Exception {
-        VelocityContext context = initializeVelocityContext(builderMetaData);
+    public void writeBeanInfo(BuilderMetadata builderMetadata, Writer writer) throws Exception {
+        VelocityContext context = initializeVelocityContext(builderMetadata);
         Template template = engine.getTemplate("beaninfo.vm");
         writeFile(context, template, writer);
     }
@@ -35,12 +35,12 @@ public class VelocityBuilderWriter implements BuilderWriter {
         return engine;
     }
 
-    private VelocityContext initializeVelocityContext(BuilderMetaData builderMetaData) {
+    private VelocityContext initializeVelocityContext(BuilderMetadata builderMetadata) {
         VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("className", builderMetaData.className);
-        velocityContext.put("packageName", builderMetaData.packageName);
-        velocityContext.put("parameters", builderMetaData.parameters);
-        velocityContext.put("imports", builderMetaData.imports);
+        velocityContext.put("className", builderMetadata.className);
+        velocityContext.put("packageName", builderMetadata.packageName);
+        velocityContext.put("parameters", builderMetadata.parameters);
+        velocityContext.put("imports", builderMetadata.imports);
         return velocityContext;
     }
 

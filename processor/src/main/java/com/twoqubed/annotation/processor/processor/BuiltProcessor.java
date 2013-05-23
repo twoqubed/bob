@@ -22,13 +22,10 @@ public class BuiltProcessor extends AbstractProcessor {
     private final BuilderWriter builderWriter;
 
     public BuiltProcessor() {
-        this(new VelocityBuilderWriter());
+        this.builderWriter = new VelocityBuilderWriter();
     }
 
-    BuiltProcessor(BuilderWriter builderWriter) {
-        this.builderWriter = builderWriter;
-    }
-
+    @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
             doProcess(roundEnv);
@@ -41,13 +38,16 @@ public class BuiltProcessor extends AbstractProcessor {
     private void doProcess(RoundEnvironment environment) throws Exception {
         ElementProcessor processor = new ElementProcessor(processingEnv.getMessager());
         for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
-            BuilderMetaData metaData = processor.handleAnnotatedClass(e);
-
-            Filer filer = processingEnv.getFiler();
-            JavaFileObject fileObject = filer.createSourceFile(metaData.fqClassName + "Builder");
-            Writer writer = fileObject.openWriter();
-            builderWriter.writeBeanInfo(metaData, writer);
+            BuilderMetadata metadata = processor.handleAnnotatedClass(e);
+            writeMetadata(metadata);
         }
+    }
+
+    private void writeMetadata(BuilderMetadata metadata) throws Exception {
+        Filer filer = processingEnv.getFiler();
+        JavaFileObject fileObject = filer.createSourceFile(metadata.fqClassName + "Builder");
+        Writer writer = fileObject.openWriter();
+        builderWriter.writeBeanInfo(metadata, writer);
     }
 
 }

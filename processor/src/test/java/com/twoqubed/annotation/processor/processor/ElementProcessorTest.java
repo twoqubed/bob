@@ -37,33 +37,33 @@ public class ElementProcessorTest extends AptinaTestCase {
     public void testExtractsPackageName() throws Exception {
         Element element = processor.getElement(PrimitiveSample.class);
         ElementProcessor elementProcessor = new ElementProcessor(messager);
-        BuilderMetaData builderMetaData = elementProcessor.handleAnnotatedClass(element);
+        BuilderMetadata builderMetadata = elementProcessor.handleAnnotatedClass(element);
 
-        assertEquals(getClass().getPackage().getName(), builderMetaData.packageName);
+        assertEquals(getClass().getPackage().getName(), builderMetadata.packageName);
     }
 
     public void testExtractsSimpleClassName() throws Exception {
         Element element = processor.getElement(PrimitiveSample.class);
         ElementProcessor elementProcessor = new ElementProcessor(messager);
-        BuilderMetaData builderMetaData = elementProcessor.handleAnnotatedClass(element);
+        BuilderMetadata builderMetadata = elementProcessor.handleAnnotatedClass(element);
 
-        assertEquals("PrimitiveSample", builderMetaData.className);
+        assertEquals("PrimitiveSample", builderMetadata.className);
     }
 
     public void testHasNoImports() throws Exception {
         Element element = processor.getElement(PrimitiveSample.class);
         ElementProcessor elementProcessor = new ElementProcessor(messager);
-        BuilderMetaData builderMetaData = elementProcessor.handleAnnotatedClass(element);
+        BuilderMetadata builderMetadata = elementProcessor.handleAnnotatedClass(element);
 
-        assertTrue(builderMetaData.imports.isEmpty());
+        assertTrue(builderMetadata.imports.isEmpty());
     }
 
     public void testProcessesAllConstructorArguments() throws Exception {
         Element element = processor.getElement(PrimitiveSample.class);
         ElementProcessor elementProcessor = new ElementProcessor(messager);
-        BuilderMetaData builderMetaData = elementProcessor.handleAnnotatedClass(element);
+        BuilderMetadata builderMetadata = elementProcessor.handleAnnotatedClass(element);
 
-        assertEquals(7, builderMetaData.parameters.size());
+        assertEquals(7, builderMetadata.parameters.size());
     }
 }
 

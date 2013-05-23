@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static javax.lang.model.type.TypeKind.*;
 
-public class BuilderMetaData {
+public class BuilderMetadata {
     String fqClassName;
     String className;
     String packageName;
