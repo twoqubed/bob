@@ -3,6 +3,7 @@ package com.twoqubed.annotation.processor.processor;
 import com.twoqubed.annotation.Built;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -23,6 +24,16 @@ import static javax.tools.Diagnostic.Kind.*;
 @SupportedSourceVersion(RELEASE_6)
 public class BuiltProcessor extends AbstractProcessor {
 
+    private final BuilderWriter builderWriter;
+
+    public BuiltProcessor() {
+        this(new VelocityBuilderWriter());
+    }
+
+    BuiltProcessor(BuilderWriter builderWriter) {
+        this.builderWriter = builderWriter;
+    }
+
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
             doProcess(roundEnv);
@@ -35,9 +46,9 @@ public class BuiltProcessor extends AbstractProcessor {
     private void doProcess(RoundEnvironment environment) throws Exception {
         for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
             BuilderMetaData metaData = handleAnnotatedClass(e);
-            BuilderWriter builderWriter = new VelocityBuilderWriter();
 
-            JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(metaData.fqClassName + "Builder");
+            Filer filer = processingEnv.getFiler();
+            JavaFileObject fileObject = filer.createSourceFile(metaData.fqClassName + "Builder");
             Writer writer = fileObject.openWriter();
             builderWriter.writeBeanInfo(metaData, writer);
         }
