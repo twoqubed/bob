@@ -1,4 +1,4 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;

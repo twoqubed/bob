@@ -1,7 +1,7 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
-import com.twoqubed.annotation.sample.PrimitiveSample;
-import com.twoqubed.annotation.sample.PrimitiveSampleBuilder;
+import com.twoqubed.bob.sample.PrimitiveSample;
+import com.twoqubed.bob.sample.PrimitiveSampleBuilder;
 import org.junit.Before;
 import org.junit.Test;
 

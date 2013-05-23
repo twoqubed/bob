@@ -1,4 +1,4 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
 import org.mockito.Mockito;
 import org.seasar.aptina.unit.AptinaTestCase;

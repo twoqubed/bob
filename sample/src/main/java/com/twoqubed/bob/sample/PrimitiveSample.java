@@ -1,6 +1,6 @@
-package com.twoqubed.annotation.sample;
+package com.twoqubed.bob.sample;
 
-import com.twoqubed.annotation.Built;
+import com.twoqubed.bob.annotation.Built;
 
 @Built
 public class PrimitiveSample {

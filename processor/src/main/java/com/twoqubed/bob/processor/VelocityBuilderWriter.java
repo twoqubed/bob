@@ -1,4 +1,4 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

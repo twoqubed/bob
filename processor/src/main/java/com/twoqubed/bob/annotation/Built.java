@@ -1,4 +1,4 @@
-package com.twoqubed.annotation;
+package com.twoqubed.bob.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

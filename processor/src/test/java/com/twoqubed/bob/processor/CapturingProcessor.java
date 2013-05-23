@@ -1,6 +1,6 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
-import com.twoqubed.annotation.Built;
+import com.twoqubed.bob.annotation.Built;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static javax.lang.model.SourceVersion.*;
 
-@SupportedAnnotationTypes("com.twoqubed.annotation.Built")
+@SupportedAnnotationTypes("com.twoqubed.bob.annotation.Built")
 @SupportedSourceVersion(RELEASE_6)
 public class CapturingProcessor extends AbstractProcessor {
 

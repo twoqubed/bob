@@ -1,7 +1,7 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
-import com.twoqubed.annotation.sample.ObjectsSample;
-import com.twoqubed.annotation.sample.ObjectsSampleBuilder;
+import com.twoqubed.bob.sample.ObjectsSample;
+import com.twoqubed.bob.sample.ObjectsSampleBuilder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

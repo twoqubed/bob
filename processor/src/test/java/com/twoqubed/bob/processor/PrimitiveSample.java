@@ -1,6 +1,6 @@
-package com.twoqubed.annotation.processor.processor;
+package com.twoqubed.bob.processor;
 
-import com.twoqubed.annotation.Built;
+import com.twoqubed.bob.annotation.Built;
 
 @Built
 public class PrimitiveSample {
