@@ -8,17 +8,12 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 import java.io.Writer;
 import java.util.Set;
 
 import static javax.lang.model.SourceVersion.*;
-import static javax.lang.model.element.ElementKind.*;
-import static javax.tools.Diagnostic.Kind.*;
 
 @SupportedAnnotationTypes("com.twoqubed.annotation.Built")
 @SupportedSourceVersion(RELEASE_6)
@@ -44,45 +39,14 @@ public class BuiltProcessor extends AbstractProcessor {
     }
 
     private void doProcess(RoundEnvironment environment) throws Exception {
+        ElementProcessor processor = new ElementProcessor(processingEnv.getMessager());
         for (Element e : environment.getElementsAnnotatedWith(Built.class)) {
-            BuilderMetaData metaData = handleAnnotatedClass(e);
+            BuilderMetaData metaData = processor.handleAnnotatedClass(e);
 
             Filer filer = processingEnv.getFiler();
             JavaFileObject fileObject = filer.createSourceFile(metaData.fqClassName + "Builder");
             Writer writer = fileObject.openWriter();
             builderWriter.writeBeanInfo(metaData, writer);
-        }
-    }
-
-    private BuilderMetaData handleAnnotatedClass(Element e) {
-        BuilderMetaData metaData = new BuilderMetaData();
-        TypeElement classElement = (TypeElement) e;
-        PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
-
-        processingEnv.getMessager().printMessage(NOTE, "annotated class: " + classElement.getQualifiedName(), e);
-
-        metaData.fqClassName = classElement.getQualifiedName().toString();
-        metaData.className = classElement.getSimpleName().toString();
-        metaData.packageName = packageElement.getQualifiedName().toString();
-
-        addConstructorParameters(e, metaData);
-        return metaData;
-    }
-
-    private void addConstructorParameters(Element e, BuilderMetaData metaData) {
-        for (Element enclosed : e.getEnclosedElements()) {
-            if (enclosed.getKind() == CONSTRUCTOR) {
-                processingEnv.getMessager().printMessage(NOTE, "constructor", e);
-                handleAnnotatedConstructor(metaData, enclosed);
-            }
-        }
-    }
-
-    private void handleAnnotatedConstructor(BuilderMetaData builderMetaData, Element e) {
-        ExecutableElement constructorElement = (ExecutableElement) e;
-        processingEnv.getMessager().printMessage(NOTE, "annotated field: " + constructorElement.getSimpleName(), e);
-        for (VariableElement each : constructorElement.getParameters()) {
-            builderMetaData.addConstructorParam(each);
         }
     }
 
