@@ -6,6 +6,7 @@ import com.twoqubed.bob.annotation.Built;
 public class PrimitiveSample {
 
     private final boolean aBoolean;
+    private final byte aByte;
     private final char aChar;
     private final short aShort;
     private final int anInt;
@@ -13,9 +14,10 @@ public class PrimitiveSample {
     private final float aFloat;
     private final double aDouble;
 
-    public PrimitiveSample(boolean aBoolean, char aChar, short aShort, int anInt, long aLong, float aFloat,
+    public PrimitiveSample(boolean aBoolean, byte aByte, char aChar, short aShort, int anInt, long aLong, float aFloat,
                            double aDouble) {
         this.aBoolean = aBoolean;
+        this.aByte = aByte;
         this.aChar = aChar;
         this.aShort = aShort;
         this.anInt = anInt;
@@ -26,6 +28,10 @@ public class PrimitiveSample {
 
     public boolean isBoolean() {
         return aBoolean;
+    }
+
+    public byte getByte() {
+        return aByte;
     }
 
     public char getChar() {
