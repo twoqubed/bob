@@ -18,7 +18,7 @@ class ElementProcessor {
         this.messager = messager;
     }
 
-    BuilderMetadata handleAnnotatedClass(Element e) {
+    BuilderMetadata handleAnnotatedClass(Element e) throws BuilderException {
         BuilderMetadata metadata = new BuilderMetadata();
         TypeElement classElement = (TypeElement) e;
         PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
@@ -33,18 +33,28 @@ class ElementProcessor {
         return metadata;
     }
 
-    private void addConstructorParameters(Element e, BuilderMetadata metadata) {
+    private void addConstructorParameters(Element e, BuilderMetadata metadata) throws BuilderException {
+        ExecutableElement constructorElement = findConstructor(e);
+        handleAnnotatedConstructor(metadata, constructorElement);
+    }
+
+    private ExecutableElement findConstructor(Element e) throws BuilderException {
+        ExecutableElement match = null;
         for (Element enclosed : e.getEnclosedElements()) {
             if (enclosed.getKind() == CONSTRUCTOR) {
-                messager.printMessage(NOTE, "constructor", e);
-                handleAnnotatedConstructor(metadata, enclosed);
+                ExecutableElement constructorElement = (ExecutableElement) enclosed;
+                if (constructorElement.getParameters().size() > 0) {
+                    if (match != null) {
+                        throw new BuilderException("Ambiguous constructors");
+                    }
+                    match = constructorElement;
+                }
             }
         }
+        return match;
     }
-    
-    private void handleAnnotatedConstructor(BuilderMetadata builderMetadata, Element e) {
-        ExecutableElement constructorElement = (ExecutableElement) e;
-        messager.printMessage(NOTE, "annotated field: " + constructorElement.getSimpleName(), e);
+
+    private void handleAnnotatedConstructor(BuilderMetadata builderMetadata, ExecutableElement constructorElement) {
         for (VariableElement each : constructorElement.getParameters()) {
             builderMetadata.addConstructorParam(each);
         }

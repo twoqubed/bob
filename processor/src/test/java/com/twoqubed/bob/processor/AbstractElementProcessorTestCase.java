@@ -12,11 +12,13 @@ import static java.nio.charset.Charset.*;
 
 public abstract class AbstractElementProcessorTestCase extends AptinaTestCase {
 
-    protected BuilderMetadata builderMetadata;
+    protected Messager messager;
+    protected ElementProcessor elementProcessor;
+    protected Element element;
 
     @Override
-    protected final void setUp() throws IOException {
-        Messager messager = Mockito.mock(Messager.class);
+    protected void setUp() throws IOException, BuilderException {
+        messager = Mockito.mock(Messager.class);
 
         setCharset(defaultCharset());
 
@@ -33,9 +35,8 @@ public abstract class AbstractElementProcessorTestCase extends AptinaTestCase {
         addCompilationUnit(classToCompile());
         compile();
 
-        Element element = processor.getElement(classToCompile());
-        ElementProcessor elementProcessor = new ElementProcessor(messager);
-        builderMetadata = elementProcessor.handleAnnotatedClass(element);
+        element = processor.getElement(classToCompile());
+        elementProcessor = new ElementProcessor(messager);
     }
 
     protected abstract Class<?> classToCompile();
