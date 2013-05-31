@@ -22,7 +22,7 @@ public class ObjectsTest extends AbstractElementProcessorTestCase {
     public void testProcessesStringParam() throws Exception {
         ConstructorParam aString = builderMetadata.parameters.get(0);
 
-        assertEquals("String", aString.getType());
+        assertEquals("java.lang.String", aString.getType());
     }
 
     public void testProcessesDateParam() throws Exception {
