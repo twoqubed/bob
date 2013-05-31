@@ -1,4 +1,4 @@
-package com.twoqubed.bob.processor;
+package com.twoqubed.bob.sample;
 
 import com.twoqubed.bob.annotation.Built;
 

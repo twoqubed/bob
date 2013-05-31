@@ -1,14 +1,12 @@
 package com.twoqubed.bob.processor;
 
+import com.twoqubed.bob.sample.PrimitiveSample;
+
 public class PrimitivesTest extends AbstractElementProcessorTestCase {
 
     @Override
-    protected Class<PrimitiveSample> classToCompile() {
+    protected Class<?> classToCompile() {
         return PrimitiveSample.class;
-    }
-
-    public void testHasNoImports() throws Exception {
-        assertTrue(builderMetadata.imports.isEmpty());
     }
 
     public void testProcessesBooleanParam() throws Exception {

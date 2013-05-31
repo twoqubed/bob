@@ -40,7 +40,6 @@ public class VelocityBuilderWriter implements BuilderWriter {
         velocityContext.put("className", builderMetadata.className);
         velocityContext.put("packageName", builderMetadata.packageName);
         velocityContext.put("parameters", builderMetadata.parameters);
-        velocityContext.put("imports", builderMetadata.imports);
         return velocityContext;
     }
 

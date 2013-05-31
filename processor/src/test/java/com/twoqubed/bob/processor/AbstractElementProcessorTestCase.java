@@ -38,6 +38,6 @@ public abstract class AbstractElementProcessorTestCase extends AptinaTestCase {
         builderMetadata = elementProcessor.handleAnnotatedClass(element);
     }
 
-    protected abstract Class<PrimitiveSample> classToCompile();
+    protected abstract Class<?> classToCompile();
 
 }

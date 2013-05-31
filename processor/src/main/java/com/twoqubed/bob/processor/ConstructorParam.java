@@ -1,5 +1,8 @@
 package com.twoqubed.bob.processor;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -53,7 +56,14 @@ public class ConstructorParam {
                 return "double";
 
             case DECLARED:
-                return ((DeclaredType) typeMirror).asElement().getSimpleName().toString();
+                Element element = ((DeclaredType) typeMirror).asElement();
+                TypeElement typeElement = (TypeElement) element;
+                PackageElement packageElement = (PackageElement) typeElement.getEnclosingElement();
+                String packageName = packageElement.getQualifiedName().toString();
+                if (packageName.equals("java.lang")) {
+                    return typeElement.getSimpleName().toString();
+                }
+                return typeElement.getQualifiedName().toString();
 
             default:
                 return "Object";
