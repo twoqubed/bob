@@ -4,7 +4,7 @@ An Java annotation processors that generates builders.
 
 ## Usage
 
-To use the annotation processor, simply include this library in your class path and any class annotation with
+To use the annotation processor, simply include this library in your class path and any class annotated with
 `Built` will have it's builder generated. The builder will contain:
 
 * A static `builder()` method that returns an instance of the builder class
