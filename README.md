@@ -137,6 +137,31 @@ immutable from that point forward.
 
 ### Prototypes
 
+An added benefit of using builders is that they make for great prototypes, particularly for testing. For example, suppose
+you need an instance of a `Person` who is married and employed for several test cases. You could create a helper class
+for just this purpose:
+
+    public class PersonPrototypes { // or maybe PersonFixtures
+
+        public static PersonBuilder aMarriedAndEmployedPerson() {
+            return new PersonBuilder()
+                    ...
+                    ...
+                    .withMarried(true)
+                    .withEmployed(true);
+        }
+    }
+
+You now have way to easlily create instances of a `Person` in the desired married and employed state:
+
+    Person person = PersonPrototypes.aMarriedAndEmployedPerson().build();
+
+And since the new builder is created each time, you can safely customize the builder without tainting any other tests:
+
+    Person person = PersonPrototypes
+            .aMarriedAndEmployedPerson()
+            .withAge(65)
+            .build();
 
 ## Acknowledgements
 
