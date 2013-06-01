@@ -122,7 +122,7 @@ equivilant scenario using a builder:
             .build();
 
 At this point, the constructor that is invoked by the builder has the oppotunity to inspect the state of the object and
-throw an exception if it is not constructed in a valid state. <sup>[1](#Footnotes)</sup>
+throw an exception if it is not constructed in a valid state. <sup>[1](#footnotes)</sup>
 
     public Person(String firstName, String lastName, ...) {
         if (firstName == null) {
