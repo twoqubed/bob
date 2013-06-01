@@ -122,7 +122,7 @@ equivilant scenario using a builder:
             .build();
 
 At this point, the constructor that is invoked by the builder has the oppotunity to inspect the state of the object and
-throw an exception if it is not constructed in a valid state.
+throw an exception if it is not constructed in a valid state. <sup>[1](#Footnotes)</sup>
 
     public Person(String firstName, String lastName, ...) {
         if (firstName == null) {
@@ -170,3 +170,9 @@ help and inspiration on this project.
 
 Thanks to [Jorge Hidalgo](http://deors.wordpress.com/) for helping me get the ball rolling with his wonderful
 [tutorial](http://deors.wordpress.com/2011/09/26/annotation-types/) on annotation processors.
+
+## Footnotes
+
+1. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
+Consider usint Guava's [`Preconditions`](http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/base/Preconditions.html)
+instead.
