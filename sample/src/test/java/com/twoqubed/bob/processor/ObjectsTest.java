@@ -24,9 +24,4 @@ public class ObjectsTest {
         assertEquals("foo", baseTypesSample.getString());
     }
 
-    @Test
-    public void buildsDate() {
-
-    }
-
 }

@@ -1,9 +1,5 @@
 package ${packageName};
 
-#foreach($import in $imports)
-import ${import};
-#end
-
 public class ${className}Builder  {
 
 #foreach($parameter in $parameters)
