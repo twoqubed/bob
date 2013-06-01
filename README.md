@@ -101,7 +101,7 @@ when using a builder:
             .withEmployed(false)
             .build();
 
-### Immutability and Consistent State
+### Immutability and Consistency
 
 The `withXxx(Type value)` method signature looks very similar to a typical _setter_ method. However, there are two
 issues to consider when using setters.
