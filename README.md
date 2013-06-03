@@ -85,7 +85,7 @@ You would create an equivilant instance with a builder like this:
 ### Clarity
 
 Now, with only three constructor parameters in this example, the builder is not providing much value. But suppose
-we have a four more constructor parameger, `int height`, `int weight`, `boolean married`, and `boolean employed`. Now
+we add four more constructor parameters: `int height`, `int weight`, `boolean married`, and `boolean employed`. Now
 the constructor invocation looks like this.
 
     Person joe = new Person("Joe", "Blow", 35, 61, 185, true, false);
