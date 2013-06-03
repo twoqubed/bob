@@ -76,7 +76,7 @@ the `Person` example above. You would create a `Person` instance using the const
 
 You would create an equivilant instance with a builder like this:
 
-    Person joe = PersonBuilder.builder
+    Person joe = PersonBuilder.builder()
             .withFirstName("Joe")
             .withLastName("Blow")
             .withAge(35)
@@ -93,7 +93,7 @@ the constructor invocation looks like this.
 Looking at this, it is not clear which `int` and `boolean` arguments go to which parameter. However, it is explicit
 when using a builder:
 
-    Person joe = PersonBuilder.builder
+    Person joe = PersonBuilder.builder()
             ...
             .withHeight(61)
             .withAge(185)
@@ -117,7 +117,7 @@ state. For example, this will create a `Person` in an invalid state.
 We now have an object in an invalid state with no way to programtically defend against it. On the other hand, consider
 equivilant scenario using a builder:
 
-    Person joe = PersonBuilder.builder
+    Person joe = PersonBuilder.builder()
             .withFirstName("Joe")
             .build();
 
@@ -144,7 +144,7 @@ for just this purpose:
     public class PersonPrototypes { // or maybe PersonFixtures
 
         public static PersonBuilder aMarriedAndEmployedPerson() {
-            return new PersonBuilder()
+            return PersonBuilder.builder()
                     ...
                     ...
                     .withMarried(true)
@@ -158,8 +158,7 @@ You now have way to easlily create instances of a `Person` in the desired marrie
 
 And since the new builder is created each time, you can safely customize the builder without tainting any other tests:
 
-    Person person = PersonPrototypes
-            .aMarriedAndEmployedPerson()
+    Person person = PersonPrototypes.aMarriedAndEmployedPerson()
             .withAge(65)
             .build();
 
