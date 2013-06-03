@@ -106,7 +106,7 @@ when using a builder:
 The `withXxx(Type value)` method signature looks very similar to a typical _setter_ method. However, there are two
 issues to consider when using setters.
 
-First, by exposing setter methods, you objects are no longer immutable. When possible, you should favor immutability.
+First, by exposing setter methods, you objects are no longer immutable. When possible, you should favor immutability.<sup>[1](#footnotes)</sup>
 
 Second, by setting these values one by one via setter method, there is an opportunity to create an object in an invalid
 state. For example, this will create a `Person` in an invalid state.
@@ -122,7 +122,7 @@ equivilant scenario using a builder:
             .build();
 
 At this point, the constructor that is invoked by the builder has the oppotunity to inspect the state of the object and
-throw an exception if it is not constructed in a valid state. <sup>[1](#footnotes)</sup>
+throw an exception if it is not constructed in a valid state. <sup>[2](#footnotes)</sup>
 
     public Person(String firstName, String lastName, ...) {
         if (firstName == null) {
@@ -172,6 +172,9 @@ Thanks to [Jorge Hidalgo](http://deors.wordpress.com/) for helping me get the ba
 
 ## Footnotes
 
-1. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
+1. The benefits of immutablity have been 
+[well covered elsewhere](https://www.google.com/search?q=favor+java+immutability).
+
+2. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
 Consider usint Guava's [`Preconditions`](http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/base/Preconditions.html)
 instead.
