@@ -176,5 +176,5 @@ Thanks to [Jorge Hidalgo](http://deors.wordpress.com/) for helping me get the ba
 [well covered elsewhere](https://www.google.com/search?q=favor+java+immutability).
 
 2. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
-Consider usint Guava's [`Preconditions`](http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/base/Preconditions.html)
+Consider using Guava's [`Preconditions`](http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/base/Preconditions.html)
 instead.
