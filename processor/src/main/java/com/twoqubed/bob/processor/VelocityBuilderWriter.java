@@ -16,13 +16,6 @@ public class VelocityBuilderWriter implements BuilderWriter {
         this.engine = initializeVelocityEngine();
     }
 
-    @Override
-    public void writeBeanInfo(BuilderMetadata builderMetadata, Writer writer) throws Exception {
-        VelocityContext context = initializeVelocityContext(builderMetadata);
-        Template template = engine.getTemplate("beaninfo.vm");
-        writeFile(context, template, writer);
-    }
-
     private VelocityEngine initializeVelocityEngine() {
         Properties props = new Properties();
         props.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.SystemLogChute");
@@ -35,11 +28,18 @@ public class VelocityBuilderWriter implements BuilderWriter {
         return engine;
     }
 
+    @Override
+    public void writeBuilder(BuilderMetadata builderMetadata, Writer writer) throws Exception {
+        VelocityContext context = initializeVelocityContext(builderMetadata);
+        Template template = engine.getTemplate("builder.vm");
+        writeFile(context, template, writer);
+    }
+
     private VelocityContext initializeVelocityContext(BuilderMetadata builderMetadata) {
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("className", builderMetadata.className);
         velocityContext.put("packageName", builderMetadata.packageName);
-        velocityContext.put("parameters", builderMetadata.parameters);
+        velocityContext.put("parameters", builderMetadata.getParameters());
         return velocityContext;
     }
 

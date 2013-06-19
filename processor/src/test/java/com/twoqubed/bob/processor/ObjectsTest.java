@@ -20,19 +20,19 @@ public class ObjectsTest extends AbstractElementProcessorTestCase {
     }
 
     public void testProcessesStringParam() throws Exception {
-        ConstructorParam aString = builderMetadata.parameters.get(0);
+        ConstructorParam aString = builderMetadata.getParameters().get(0);
 
         assertEquals("java.lang.String", aString.getType());
     }
 
     public void testProcessesDateParam() throws Exception {
-        ConstructorParam aDate = builderMetadata.parameters.get(1);
+        ConstructorParam aDate = builderMetadata.getParameters().get(1);
 
         assertEquals("java.util.Date", aDate.getType());
     }
 
     public void testProcessesCustomDateParam() throws Exception {
-        ConstructorParam aDate = builderMetadata.parameters.get(2);
+        ConstructorParam aDate = builderMetadata.getParameters().get(2);
 
         assertEquals("com.twoqubed.bob.sample.Date", aDate.getType());
     }

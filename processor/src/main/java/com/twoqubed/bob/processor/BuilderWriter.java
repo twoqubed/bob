@@ -4,6 +4,6 @@ import java.io.Writer;
 
 public interface BuilderWriter {
 
-    void writeBeanInfo(BuilderMetadata builderMetadata, Writer writer) throws Exception;
+    void writeBuilder(BuilderMetadata builderMetadata, Writer writer) throws Exception;
 
 }

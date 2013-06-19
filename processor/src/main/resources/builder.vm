@@ -1,6 +1,6 @@
 package ${packageName};
 
-public class ${className}Builder  {
+public class ${className}Builder {
 
 #foreach($parameter in $parameters)
     private ${parameter.type} ${parameter.name};
@@ -24,5 +24,4 @@ public class ${className}Builder  {
 #end
         );
     }
-
 }

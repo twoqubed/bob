@@ -20,6 +20,6 @@ public class NoArgConstructorTest extends AbstractElementProcessorTestCase {
     }
 
     public void testPrefersConstructorWithArgs() throws Exception {
-        assertEquals(1, builderMetadata.parameters.size());
+        assertEquals(1, builderMetadata.getParameters().size());
     }
 }

@@ -6,6 +6,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import static javax.lang.model.element.ElementKind.*;
 import static javax.tools.Diagnostic.Kind.*;
@@ -56,7 +57,14 @@ class ElementProcessor {
 
     private void handleAnnotatedConstructor(BuilderMetadata builderMetadata, ExecutableElement constructorElement) {
         for (VariableElement each : constructorElement.getParameters()) {
-            builderMetadata.addConstructorParam(each);
+            String simpleName = each.getSimpleName().toString();
+
+            TypeMirror typeMirror = each.asType();
+            String type = typeMirror.toString();
+
+            ConstructorParam constructorParam = new ConstructorParam(simpleName, type);
+
+            builderMetadata.addConstructorParam(constructorParam);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.twoqubed.bob.processor;
 
-import javax.lang.model.element.VariableElement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BuilderMetadata {
@@ -9,14 +9,18 @@ public class BuilderMetadata {
     String className;
     String packageName;
 
-    final List<ConstructorParam> parameters = new ArrayList<ConstructorParam>();
+    private final List<ConstructorParam> parameters = new ArrayList<ConstructorParam>();
 
-    void addConstructorParam(VariableElement element) {
-        ConstructorParam constructorParam = new ConstructorParam(element);
+    void addConstructorParam(ConstructorParam constructorParam) {
         parameters.add(constructorParam);
-        parameters.get(parameters.size() - 1).last = true;
-        if (parameters.size() > 1) {
-            parameters.get(parameters.size() - 2).last = false;
+    }
+
+    public List<ConstructorParam> getParameters() {
+        List<ConstructorParam> copy = new ArrayList<ConstructorParam>(parameters.size());
+        for (Iterator<ConstructorParam> i = parameters.iterator(); i.hasNext(); ) {
+            ConstructorParam param = i.next();
+            copy.add(new ConstructorParam(param.getName(), param.getType(), !i.hasNext()));
         }
+        return copy;
     }
 }

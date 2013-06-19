@@ -10,12 +10,8 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Target({ TYPE  })
 @Retention(SOURCE)
 @Documented
-/**
- * <p>Indicates a builder should be generated for the annotated class.</p>
- *
- * <p>The annotated class must have exactly one constructor that accepts parameters. No-arg constructors will
- * be ignored.</p>
- */
-public @interface Built {
+public @interface Builder {
+
+    Class[] value();
 
 }

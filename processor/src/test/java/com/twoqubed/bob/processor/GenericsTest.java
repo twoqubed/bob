@@ -20,19 +20,19 @@ public class GenericsTest extends AbstractElementProcessorTestCase {
     }
 
     public void testProcessesGenericTypes() throws Exception {
-        ConstructorParam aString = builderMetadata.parameters.get(0);
+        ConstructorParam aString = builderMetadata.getParameters().get(0);
 
         assertEquals("java.util.List<java.lang.String>", aString.getType());
     }
 
     public void testProcessesWildcardTypes() throws Exception {
-        ConstructorParam aString = builderMetadata.parameters.get(1);
+        ConstructorParam aString = builderMetadata.getParameters().get(1);
 
         assertEquals("java.util.List<?>", aString.getType());
     }
 
     public void testProcessesBoundedTypes() throws Exception {
-        ConstructorParam aString = builderMetadata.parameters.get(2);
+        ConstructorParam aString = builderMetadata.getParameters().get(2);
 
         assertEquals("java.util.List<? extends java.lang.Number>", aString.getType());
     }

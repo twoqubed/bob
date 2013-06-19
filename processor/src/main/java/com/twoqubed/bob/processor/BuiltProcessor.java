@@ -47,7 +47,7 @@ public class BuiltProcessor extends AbstractProcessor {
         Filer filer = processingEnv.getFiler();
         JavaFileObject fileObject = filer.createSourceFile(metadata.fqClassName + "Builder");
         Writer writer = fileObject.openWriter();
-        builderWriter.writeBeanInfo(metadata, writer);
+        builderWriter.writeBuilder(metadata, writer);
     }
 
 }

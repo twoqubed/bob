@@ -1,20 +1,22 @@
 package com.twoqubed.bob.processor;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
-
 public class ConstructorParam {
 
-    private final VariableElement variableElement;
+    private final String simpleName;
+    private final String type;
     boolean last;
 
-    public ConstructorParam(VariableElement variableElement) {
-        this.variableElement = variableElement;
+    public ConstructorParam(String simpleName, String type) {
+        this(simpleName, type, false);
+    }
+
+    public ConstructorParam(String simpleName, String type, boolean last) {
+        this.simpleName = simpleName;
+        this.type = type;
+        this.last = last;
     }
 
     public String getMethodName() {
-        String simpleName = variableElement.getSimpleName().toString();
         return String.format("%s%s%s",
                 "with",
                 simpleName.substring(0, 1).toUpperCase(),
@@ -22,7 +24,7 @@ public class ConstructorParam {
     }
 
     public String getName() {
-        return variableElement.getSimpleName().toString();
+        return simpleName;
     }
 
     public String getParam() {
@@ -34,11 +36,7 @@ public class ConstructorParam {
 
 
     public String getType() {
-        return getType(variableElement);
+        return type;
     }
 
-    private String getType(Element element) {
-        TypeMirror typeMirror = element.asType();
-        return typeMirror.toString();
-    }
 }
