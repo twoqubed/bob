@@ -6,7 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.rules.ExpectedException.*;
@@ -16,12 +18,19 @@ public class ObjectsTest {
 
     @Test
     public void buildsString() {
-        ObjectsSample baseTypesSample = ObjectsSampleBuilder.builder()
+        Date now = new Date();
+        List<String> strings = new ArrayList<String>();
+        strings.add("bar");
+
+        ObjectsSample objectsSample = ObjectsSampleBuilder.builder()
                 .withAString("foo")
-                .withADate(new Date())
+                .withADate(now)
+                .withAListOfStrings(strings)
                 .build();
 
-        assertEquals("foo", baseTypesSample.getString());
+        assertEquals("foo", objectsSample.getString());
+        assertEquals(now, objectsSample.getDate());
+        assertEquals(strings, objectsSample.getListOfStrings());
     }
 
 }
