@@ -67,6 +67,25 @@ The only constraints are:
 * There must be exactly one constructor that contains arguments. No-arg constructors are ignored. If multiple constructors
 are found that take arguments, a compile error will be raised.
 
+## Maven integration
+
+You will need to add the following two dependencies:
+
+    <dependency>
+        <groupId>com.twoqubed.bob</groupId>
+        <artifactId>annotation</artifactId>
+        <version>0.9.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.twoqubed.bob</groupId>
+        <artifactId>processor</artifactId>
+        <version>0.9.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+Both dependencies are of `provider` scope, since both are needed at compile time, but neither are needed at runtime.
+
 ## Why Builders?
 
 Builders are useful for helping create objects whose constructors contain several parameters. For example, consider

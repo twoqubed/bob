@@ -21,12 +21,16 @@
             <groupId>com.twoqubed.bob</groupId>
             <artifactId>annotation</artifactId>
             <version>0.9.0-SNAPSHOT</version>
+            <!-- Force the annotation to be included in compile scope, but omitted from packaging. Since the
+                 annotation is source scoped, we won't need it at runtime. -->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.twoqubed.bob</groupId>
             <artifactId>processor</artifactId>
             <version>0.9.0-SNAPSHOT</version>
-            <!-- Force the processor to be included in compile scope, but omitted from packaging -->
+            <!-- Force the processor to be included in compile scope, but omitted from packaging. We only need the
+                 processor to be available at compile. It's not needed at runtime. -->
             <scope>provided</scope>
         </dependency>
 
