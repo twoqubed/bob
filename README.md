@@ -64,7 +64,7 @@ The builder that is produced would look like this:
 The only constraints are:
 
 * The target class must be annotated with the `Built` annotation
-* The must be exactly one constructor that contains arguments. No-arg constructors are ignored. If multiple constructors
+* There must be exactly one constructor that contains arguments. No-arg constructors are ignored. If multiple constructors
 are found that take arguments, a compile error will be raised.
 
 ## Why Builders?
