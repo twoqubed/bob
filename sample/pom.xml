@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sample</artifactId>
+    <artifactId>bob-sample</artifactId>
     <version>0.9.1-SNAPSHOT</version>
 
     <parent>
         <groupId>com.twoqubed.bob</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>bob-parent</artifactId>
         <version>0.9.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.twoqubed.bob</groupId>
-            <artifactId>annotation</artifactId>
+            <artifactId>bob-annotation</artifactId>
             <version>0.9.1-SNAPSHOT</version>
             <!-- Force the annotation to be included in compile scope, but omitted from packaging. Since the
                  annotation is source scoped, we won't need it at runtime. -->
@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>com.twoqubed.bob</groupId>
-            <artifactId>processor</artifactId>
+            <artifactId>bob-processor</artifactId>
             <version>0.9.1-SNAPSHOT</version>
             <!-- Force the processor to be included in compile scope, but omitted from packaging. We only need the
                  processor to be available at compile. It's not needed at runtime. -->
