@@ -151,7 +151,7 @@ throw an exception if it is not constructed in a valid state. <sup>[2](#footnote
         ...
     }
 
-In this case, we can programtically guarantee a `Person` will always be constructed in an invalid state and will be
+In this case, we can programtically guarantee a `Person` will always be constructed in a valid state and will be
 immutable from that point forward.
 
 ### Prototypes
