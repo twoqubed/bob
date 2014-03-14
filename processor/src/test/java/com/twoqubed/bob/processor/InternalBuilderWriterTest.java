@@ -10,7 +10,7 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.*;
 
-public class VelocityBuilderWriterTest {
+public class InternalBuilderWriterTest {
 
     @Test
     public void generatesSourceFromMetadata() throws Exception {
@@ -21,7 +21,7 @@ public class VelocityBuilderWriterTest {
         metadata.addConstructorParam(new ConstructorParam("bar", "java.lang.String"));
         metadata.addConstructorParam(new ConstructorParam("baz", "java.lang.String"));
 
-        VelocityBuilderWriter writer = new VelocityBuilderWriter();
+        InternalBuilderWriter writer = new InternalBuilderWriter();
         StringWriter actual = new StringWriter();
         writer.writeBuilder(metadata, actual);
 

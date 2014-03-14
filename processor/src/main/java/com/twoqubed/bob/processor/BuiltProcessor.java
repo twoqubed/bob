@@ -22,7 +22,7 @@ public class BuiltProcessor extends AbstractProcessor {
     private final BuilderWriter builderWriter;
 
     public BuiltProcessor() {
-        this.builderWriter = new VelocityBuilderWriter();
+        this.builderWriter = new InternalBuilderWriter();
     }
 
     @Override
