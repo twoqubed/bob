@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bob-sample</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <parent>
         <groupId>com.twoqubed.bob</groupId>
         <artifactId>bob-parent</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.twoqubed.bob</groupId>
             <artifactId>bob-annotation</artifactId>
-            <version>0.9.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <!-- Force the annotation to be included in compile scope, but omitted from packaging. Since the
                  annotation is source scoped, we won't need it at runtime. -->
             <scope>provided</scope>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.twoqubed.bob</groupId>
             <artifactId>bob-processor</artifactId>
-            <version>0.9.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <!-- Force the processor to be included in compile scope, but omitted from packaging. We only need the
                  processor to be available at compile. It's not needed at runtime. -->
             <scope>provided</scope>
