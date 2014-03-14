@@ -84,7 +84,7 @@ You will need to add the following two dependencies:
         <scope>provided</scope>
     </dependency>
 
-Both dependencies are of `provider` scope, since both are needed at compile time, but neither are needed at runtime.
+Both dependencies are of `provided` scope, since both are needed at compile time, but neither are needed at runtime.
 
 ## Why Builders?
 
