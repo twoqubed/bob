@@ -9,6 +9,12 @@ public class FooBuilder {
         return new FooBuilder();
     }
 
+    public static FooBuilder fromFoo(Foo foo) {
+        return new FooBuilder()
+                .withBar(foo.getBar())
+                .withBaz(foo.getBaz());
+    }
+
     public FooBuilder withBar(java.lang.String bar) {
         this.bar = bar;
         return this;
