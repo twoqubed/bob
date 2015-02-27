@@ -26,37 +26,37 @@ public class PrimitivesTest {
 
     @Test
     public void buildsBoolean() {
-        assertEquals(true, primitiveSample.isBoolean());
+        assertEquals(true, primitiveSample.isABoolean());
     }
 
     @Test
     public void buildsChar() {
-        assertEquals('a', primitiveSample.getChar());
+        assertEquals('a', primitiveSample.getAChar());
     }
 
     @Test
     public void buildShort() {
-        assertEquals(1, primitiveSample.getShort());
+        assertEquals(1, primitiveSample.getAShort());
     }
 
     @Test
     public void buildsInt() {
-        assertEquals(2, primitiveSample.getInt());
+        assertEquals(2, primitiveSample.getAnInt());
     }
 
     @Test
     public void buildsLong() {
-        assertEquals(3, primitiveSample.getLong());
+        assertEquals(3, primitiveSample.getALong());
     }
 
     @Test
     public void buildsFloat() {
-        assertEquals(1.0, primitiveSample.getFloat(), 0.0);
+        assertEquals(1.0, primitiveSample.getAFloat(), 0.0);
     }
 
     @Test
     public void buildsDouble() {
-        assertEquals(2.0, primitiveSample.getDouble(), 0.0);
+        assertEquals(2.0, primitiveSample.getADouble(), 0.0);
     }
 
 }

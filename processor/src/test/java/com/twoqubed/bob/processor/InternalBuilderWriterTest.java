@@ -20,6 +20,8 @@ public class InternalBuilderWriterTest {
         metadata.packageName = "com.twoqubed.bob.processor.generated";
         metadata.addConstructorParam(new ConstructorParam("bar", "java.lang.String"));
         metadata.addConstructorParam(new ConstructorParam("baz", "java.lang.String"));
+        metadata.addConstructorParam(new ConstructorParam("qux", "java.lang.Boolean"));
+        metadata.addConstructorParam(new ConstructorParam("norf", "boolean"));
 
         InternalBuilderWriter writer = new InternalBuilderWriter();
         StringWriter actual = new StringWriter();

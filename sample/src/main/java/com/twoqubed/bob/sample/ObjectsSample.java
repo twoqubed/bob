@@ -17,15 +17,15 @@ public class ObjectsSample {
         this.aListOfStrings = aListOfStrings;
     }
 
-    public String getString() {
+    public String getAString() {
         return aString;
     }
 
-    public Date getDate() {
+    public Date getADate() {
         return aDate;
     }
 
-    public List<String> getListOfStrings() {
+    public List<String> getAListOfStrings() {
         return aListOfStrings;
     }
 }

@@ -4,9 +4,19 @@ public class FooBuilder {
 
     private java.lang.String bar;
     private java.lang.String baz;
+    private java.lang.Boolean qux;
+    private boolean norf;
 
     public static FooBuilder builder() {
         return new FooBuilder();
+    }
+
+    public static FooBuilder fromFoo(Foo foo) {
+        return new FooBuilder()
+                    .withBar(foo.getBar())
+                    .withBaz(foo.getBaz())
+                    .withQux(foo.isQux())
+                    .withNorf(foo.isNorf());
     }
 
     public FooBuilder withBar(java.lang.String bar) {
@@ -19,10 +29,22 @@ public class FooBuilder {
         return this;
     }
 
+    public FooBuilder withQux(java.lang.Boolean qux) {
+        this.qux = qux;
+        return this;
+    }
+
+    public FooBuilder withNorf(boolean norf) {
+        this.norf = norf;
+        return this;
+    }
+
     public Foo build() {
         return new Foo(
                 bar,
-                baz
+                baz,
+                qux,
+                norf
         );
     }
 }
