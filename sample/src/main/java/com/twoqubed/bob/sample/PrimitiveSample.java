@@ -24,31 +24,31 @@ public class PrimitiveSample {
         this.aDouble = aDouble;
     }
 
-    public boolean isBoolean() {
+    public boolean isABoolean() {
         return aBoolean;
     }
 
-    public char getChar() {
+    public char getAChar() {
         return aChar;
     }
 
-    public short getShort() {
+    public short getAShort() {
         return aShort;
     }
 
-    public int getInt() {
+    public int getAnInt() {
         return anInt;
     }
 
-    public long getLong() {
+    public long getALong() {
         return aLong;
     }
 
-    public float getFloat() {
+    public float getAFloat() {
         return aFloat;
     }
 
-    public double getDouble() {
+    public double getADouble() {
         return aDouble;
     }
 

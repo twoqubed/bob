@@ -28,9 +28,9 @@ public class ObjectsTest {
                 .withAListOfStrings(strings)
                 .build();
 
-        assertEquals("foo", objectsSample.getString());
-        assertEquals(now, objectsSample.getDate());
-        assertEquals(strings, objectsSample.getListOfStrings());
+        assertEquals("foo", objectsSample.getAString());
+        assertEquals(now, objectsSample.getADate());
+        assertEquals(strings, objectsSample.getAListOfStrings());
     }
 
 }

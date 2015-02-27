@@ -61,12 +61,20 @@ public class InternalBuilderWriter implements BuilderWriter {
         writer.write(format("        return new %sBuilder()\n", metadata.className));
         List<ConstructorParam> parameters = metadata.getParameters();
         for (ConstructorParam param : parameters) {
-            writer.write(format("                .%s(%s.get%s())%s\n",
-                    param.getMethodName(), metadata.className.toLowerCase(), capitalize(param.getName()),
-                    maybeAppendSemiColon(param, parameters)));
+            writer.write(format("                    .%s(%s.%s%s())%s\n",
+                    param.getMethodName(), metadata.className.toLowerCase(), determineGetter(param.getType()),
+                    capitalize(param.getName()), maybeAppendSemiColon(param, parameters)));
         }
 
         writer.write("    }\n\n");
+    }
+
+    private String determineGetter(String type) {
+        if (type.equals("java.lang.Boolean") || type.equals("boolean")) {
+            return "is";
+        } else {
+            return "get";
+        }
     }
 
     private String capitalize(String name) {

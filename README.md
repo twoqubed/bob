@@ -73,6 +73,7 @@ The only constraints are:
 * The target class must be annotated with the `Built` annotation
 * There must be exactly one constructor that contains arguments. No-arg constructors are ignored. If multiple constructors
 are found that take arguments, a compile error will be raised.
+* Getters must be the same name as the argument name. The getter for argument `foo` must be named `getFoo()`.
 
 ## Maven integration
 
