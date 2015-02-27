@@ -46,6 +46,7 @@ The builder that is produced would look like this:
                 .withFirstName(person.getFirstName())
                 .withLastName(person.getLastName())
                 .withAge(person.getAge());
+        }
 
         public PersonBuilder withFirstName(String firstName) {
             this.firstName = firstName;
