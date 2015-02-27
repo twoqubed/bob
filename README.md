@@ -9,7 +9,7 @@ To use the annotation processor, simply include this library in your class path 
 
 * A static `builder()` method that returns an instance of the builder class
 * One `withXxx(Type value)` for each parameter in the target class' constructor. This method will have a single
-parameter that is the same at the corresponding constructor parameters's type.
+parameter that is the same at the corresponding constructor parameters' type.
 * A `build` method that will return the built instance of the target class.
 
 For example, given the following class:
@@ -141,14 +141,14 @@ state. For example, this will create a `Person` in an invalid state.
     Person invalid = new Person();
     invalid.setFirstName("Joe");
 
-We now have an object in an invalid state with no way to programtically defend against it. On the other hand, consider
-equivilant scenario using a builder:
+We now have an object in an invalid state with no way to programatically defend against it. On the other hand, consider
+equivalent scenario using a builder:
 
     Person joe = PersonBuilder.builder()
             .withFirstName("Joe")
             .build();
 
-At this point, the constructor that is invoked by the builder has the oppotunity to inspect the state of the object and
+At this point, the constructor that is invoked by the builder has the opportunity to inspect the state of the object and
 throw an exception if it is not constructed in a valid state. <sup>[2](#footnotes)</sup>
 
     public Person(String firstName, String lastName, ...) {
@@ -159,7 +159,7 @@ throw an exception if it is not constructed in a valid state. <sup>[2](#footnote
         ...
     }
 
-In this case, we can programtically guarantee a `Person` will always be constructed in a valid state and will be
+In this case, we can programatically guarantee a `Person` will always be constructed in a valid state and will be
 immutable from that point forward.
 
 ### Prototypes
