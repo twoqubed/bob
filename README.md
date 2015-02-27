@@ -41,6 +41,12 @@ The builder that is produced would look like this:
             return new PersonBuilder();
         }
 
+        public static PersonBuilder fromPerson(Person person) {
+            return new PersonBuilder()
+                .withFirstName(person.getFirstName())
+                .withLastName(person.getLastName())
+                .withAge(person.getAge());
+
         public PersonBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
@@ -191,7 +197,7 @@ Thanks to [Jorge Hidalgo](http://deors.wordpress.com/) for helping me get the ba
 
 ## Footnotes
 
-1. The benefits of immutablity have been 
+1. The benefits of immutablity have been
 [well covered elsewhere](https://www.google.com/search?q=favor+java+immutability).
 
 2. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
