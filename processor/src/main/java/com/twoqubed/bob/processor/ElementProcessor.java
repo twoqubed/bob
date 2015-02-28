@@ -1,5 +1,7 @@
 package com.twoqubed.bob.processor;
 
+import com.twoqubed.bob.annotation.Built;
+
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -20,7 +22,8 @@ class ElementProcessor {
     }
 
     BuilderMetadata handleAnnotatedClass(Element e) throws BuilderException {
-        BuilderMetadata metadata = new BuilderMetadata();
+        Built built = e.getAnnotation(Built.class);
+        BuilderMetadata metadata = new BuilderMetadata(built.generateCopyMethod());
         TypeElement classElement = (TypeElement) e;
         PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
 

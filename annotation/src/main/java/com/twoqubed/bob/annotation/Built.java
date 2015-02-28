@@ -18,4 +18,9 @@ import static java.lang.annotation.RetentionPolicy.*;
  */
 public @interface Built {
 
+    /**
+     * <p>Indicates whether a static copy method should be generated.</p>
+     */
+    boolean generateCopyMethod() default false;
+
 }

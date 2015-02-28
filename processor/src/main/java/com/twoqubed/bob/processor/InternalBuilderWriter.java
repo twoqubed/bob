@@ -29,8 +29,12 @@ public class InternalBuilderWriter implements BuilderWriter {
         }
 
         writer.write("\n");
+
         writeStaticBuilderMethod(metadata, writer);
-        writeStaticFromObjectMethod(metadata, writer);
+
+        if (metadata.generateCopyMethod) {
+            writeStaticCopyMethod(metadata, writer);
+        }
 
         for (ConstructorParam param : metadata.getParameters()) {
             writeParamMethod(metadata, writer, param);
@@ -55,26 +59,30 @@ public class InternalBuilderWriter implements BuilderWriter {
         writer.write("    }\n\n");
     }
 
-    private void writeStaticFromObjectMethod(BuilderMetadata metadata, Writer writer) throws IOException {
+    private void writeStaticCopyMethod(BuilderMetadata metadata, Writer writer) throws IOException {
         writer.write(format("    public static %sBuilder from%s(%s %s) {\n", metadata.className, metadata.className,
-                metadata.className, metadata.className.toLowerCase()));
+                metadata.className, lowerCaseCamelCase(metadata.className)));
         writer.write(format("        return new %sBuilder()\n", metadata.className));
         List<ConstructorParam> parameters = metadata.getParameters();
         for (ConstructorParam param : parameters) {
             writer.write(format("                    .%s(%s.%s%s())%s\n",
-                    param.getMethodName(), metadata.className.toLowerCase(), determineGetter(param.getType()),
+                    param.getMethodName(), lowerCaseCamelCase(metadata.className), determineGetter(param.getType()),
                     capitalize(param.getName()), maybeAppendSemiColon(param, parameters)));
         }
 
         writer.write("    }\n\n");
     }
 
+    private String lowerCaseCamelCase(String input) {
+        return input.substring(0, 1).toLowerCase() + input.substring(1);
+    }
+
     private String determineGetter(String type) {
-        if (type.equals("java.lang.Boolean") || type.equals("boolean")) {
-            return "is";
-        } else {
-            return "get";
-        }
+        return isBooleanProperty(type) ? "is" : "get";
+    }
+
+    private boolean isBooleanProperty(String type) {
+        return type.equals("java.lang.Boolean") || type.equals("boolean");
     }
 
     private String capitalize(String name) {

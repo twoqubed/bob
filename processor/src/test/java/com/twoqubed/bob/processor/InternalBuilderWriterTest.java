@@ -14,25 +14,41 @@ public class InternalBuilderWriterTest {
 
     @Test
     public void generatesSourceFromMetadata() throws Exception {
-        BuilderMetadata metadata = new BuilderMetadata();
-        metadata.fqClassName = "com.twoqubed.bob.processor.generated.Foo";
-        metadata.className = "Foo";
+        assertExpectedSourceIsGenerated("FooWithCopy", true);
+    }
+
+    @Test
+    public void omitsCopyConstructor() throws Exception {
+        assertExpectedSourceIsGenerated("FooNoCopy", false);
+    }
+
+    private void assertExpectedSourceIsGenerated(String className, boolean generateCopyMethod) throws Exception {
+        BuilderMetadata metadata = new BuilderMetadata(generateCopyMethod);
+        metadata.fqClassName = "com.twoqubed.bob.processor.generated." + className;
+        metadata.className = className;
         metadata.packageName = "com.twoqubed.bob.processor.generated";
         metadata.addConstructorParam(new ConstructorParam("bar", "java.lang.String"));
         metadata.addConstructorParam(new ConstructorParam("baz", "java.lang.String"));
         metadata.addConstructorParam(new ConstructorParam("qux", "java.lang.Boolean"));
         metadata.addConstructorParam(new ConstructorParam("norf", "boolean"));
 
-        InternalBuilderWriter writer = new InternalBuilderWriter();
-        StringWriter actual = new StringWriter();
-        writer.writeBuilder(metadata, actual);
+        InternalBuilderWriter builderWriter = new InternalBuilderWriter();
+        StringWriter stringWriter = new StringWriter();
+        builderWriter.writeBuilder(metadata, stringWriter);
 
-        String expected = loadExpected();
-        assertEquals(expected, actual.getBuffer().toString());
+        String expected = loadExpected(className);
+        String actual = stringWriter.getBuffer().toString();
+        assertEquals(generatedFailureMessage(expected, actual), expected, actual);
     }
 
-    private String loadExpected() throws IOException {
-        InputStream in = getClass().getResourceAsStream("/com/twoqubed/bob/processor/generated/FooBuilder.java");
+    private String generatedFailureMessage(String expected, String actual) {
+        return "Expected:\n===========\n" + expected + "\n===========\n\nBut was actually:\n===========\n" +
+                actual + "\n===========";
+    }
+
+    private String loadExpected(String className) throws IOException {
+        String sourceFile = "/com/twoqubed/bob/processor/generated/" + className + "Builder.java";
+        InputStream in = getClass().getResourceAsStream(sourceFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder expected = new StringBuilder();
         String line = null;
