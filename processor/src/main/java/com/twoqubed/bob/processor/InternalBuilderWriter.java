@@ -65,12 +65,18 @@ public class InternalBuilderWriter implements BuilderWriter {
         writer.write(format("        return new %sBuilder()\n", metadata.className));
         List<ConstructorParam> parameters = metadata.getParameters();
         for (ConstructorParam param : parameters) {
-            writer.write(format("                    .%s(%s.%s%s())%s\n",
-                    param.getMethodName(), lowerCaseCamelCase(metadata.className), determineGetter(param.getType()),
-                    capitalize(param.getName()), maybeAppendSemiColon(param, parameters)));
+            maybeCopyFromAccessor(metadata, writer, parameters, param);
         }
 
         writer.write("    }\n\n");
+    }
+
+    private void maybeCopyFromAccessor(BuilderMetadata metadata, Writer writer,
+                                       List<ConstructorParam> parameters,
+                                       ConstructorParam param) throws IOException {
+        writer.write(format("                    .%s(%s.%s%s())%s\n",
+                param.getMethodName(), lowerCaseCamelCase(metadata.className), determineGetter(param.getType()),
+                capitalize(param.getName()), maybeAppendSemiColon(param, parameters)));
     }
 
     private String lowerCaseCamelCase(String input) {
@@ -94,9 +100,8 @@ public class InternalBuilderWriter implements BuilderWriter {
     private String maybeAppendSemiColon(ConstructorParam param, List<ConstructorParam> parameters) {
         if (parameters.indexOf(param) == parameters.size() - 1) {
             return ";";
-        } else {
-            return "";
         }
+        return "";
     }
 
     private void writeParamMethod(BuilderMetadata metadata, Writer writer, ConstructorParam param) throws IOException {
