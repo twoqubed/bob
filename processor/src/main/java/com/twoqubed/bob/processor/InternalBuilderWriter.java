@@ -2,6 +2,12 @@ package com.twoqubed.bob.processor;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.lang.String.*;
 
@@ -44,7 +50,42 @@ public class InternalBuilderWriter implements BuilderWriter {
     }
 
     private void writeField(Writer writer, ConstructorParam param) throws IOException {
-        writer.write(format("    private %s %s;\n", param.getType(), param.getName()));
+        if (param.getType().contains("<") && param.getType().contains(">")) {
+            writer.write(format("    private %s %s = new %s();\n", param.getType(), param.getName(),
+                    determineCollectionType(param.getType())));
+        } else if (param.getType().endsWith("[]")) {
+            writer.write(format("    private %s %s = new %s;\n", param.getType(), param.getName(),
+                    determineArray(param.getType())));
+        } else {
+            writer.write(format("    private %s %s;\n", param.getType(), param.getName()));
+        }
+    }
+
+    private String determineArray(String type) {
+        int lastOpenBracket = type.lastIndexOf("[");
+        return format("%s0]", type.substring(0, lastOpenBracket + 1));
+    }
+
+    private String determineCollectionType(String type) {
+        int firstBracket = type.indexOf("<");
+        int lastBracket = type.lastIndexOf(">");
+        String abstractType = type.substring(0, firstBracket);
+        String concreteType = determineConcreteType(abstractType);
+
+        return String.format("%s<%s>", concreteType, type.substring(firstBracket + 1, lastBracket));
+    }
+
+    private String determineConcreteType(String baseType) {
+        if (List.class.getName().equals(baseType)) {
+            return ArrayList.class.getName();
+        }
+        if (Set.class.getName().equals(baseType)) {
+            return HashSet.class.getName();
+        }
+        if (Map.class.getName().equals(baseType)) {
+            return HashMap.class.getName();
+        }
+        return baseType;
     }
 
     private void writeStaticBuilderMethod(BuilderMetadata builderMetadata, Writer writer) throws IOException {
