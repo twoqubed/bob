@@ -33,4 +33,17 @@ public class ObjectsTest {
         assertEquals(strings, objectsSample.getListOfStrings());
     }
 
+    @Test
+    public void buildsWithoutListOfStrings() {
+        Date now = new Date();
+
+        ObjectsSample objectsSample = ObjectsSampleBuilder.builder()
+                .withAString("foo")
+                .withADate(now)
+                .build();
+
+        assertEquals("foo", objectsSample.getAString());
+        assertEquals(now, objectsSample.getADate());
+        assertEquals(0, objectsSample.getAListOfStrings().size());
+    }
 }
