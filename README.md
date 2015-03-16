@@ -19,11 +19,13 @@ For example, given the following class:
         private final String firstName;
         private final String lastName;
         private final int age;
+        private final List<Person> children = new ArrayList<Person>();
 
-        public Person(String firstName, String lastName, int age) {
+        public Person(String firstName, String lastName, int age, List<Person> children) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.age = age;
+            this.children = new ArrayList<Person>(children);
         }
 
         ...
@@ -36,6 +38,7 @@ The builder that is produced would look like this:
         private String firstName;
         private String lastName;
         private int age;
+        private List<Person> children = new ArrayList<Person>();
 
         public static PersonBuilder builder() {
             return new PersonBuilder();
@@ -56,8 +59,13 @@ The builder that is produced would look like this:
             return this;
         }
 
+        public PersonBuilder withChildren(List<Person> children) {
+            this.children = children;
+            return this;
+        }
+
         public Person build() {
-            return new Person(firstName, lastName, age);
+            return new Person(firstName, lastName, age, children);
         }
     }
 
@@ -171,7 +179,7 @@ for just this purpose:
         }
     }
 
-You now have way to easlily create instances of a `Person` in the desired married and employed state:
+You now have way to easily create instances of a `Person` in the desired married and employed state:
 
     Person person = PersonPrototypes.aMarriedAndEmployedPerson().build();
 
@@ -191,7 +199,7 @@ Thanks to [Jorge Hidalgo](http://deors.wordpress.com/) for helping me get the ba
 
 ## Footnotes
 
-1. The benefits of immutablity have been 
+1. The benefits of immutablity have been
 [well covered elsewhere](https://www.google.com/search?q=favor+java+immutability).
 
 2. Explicitly checking each parameter in an if block and conditionally throwing an exception can get quite noisy.
