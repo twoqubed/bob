@@ -1,0 +1,33 @@
+name: test-coverage
+
+# Controls when the workflow will run
+on:
+   # Triggers the workflow on pull requests for the master branch
+   pull_request:
+     branches:
+       - 'master'
+       - 'hotfix/**'
+       - 'release/**'
+     paths:
+       - '.github/workflows/test-coverage.yml'
+       - '.version'
+       - '**/pom.xml'
+       - '**/Dockerfile'
+       - '**/src/**'
+       - 'docker/**'
+       - 'src/**'
+   # Allows this workflow to be ran manually from the Actions tab
+   workflow_dispatch:
+
+jobs:
+  call-workflow:
+    uses: the-container-store/github-actions-scripts/.github/workflows/test-coverage-maven.yml@master
+    with:
+      APP_NAME: bob
+      # line coverage, mutation coverage, test strength
+      PITEST_GOALS: 84,87,95
+      POM_DIR: processor
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      GH_ACTIONS_PAT: ${{ secrets.GH_ACTIONS_PAT }}
